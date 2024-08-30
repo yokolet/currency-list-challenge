@@ -27,13 +27,14 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 // Example: Import a stylesheet in app/frontend/index.css
 // import '~/index.css'
 
-import '~/assets/main.css'
+import './index.css'
+import '../assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from '~/App.vue'
-import router from '~/router'
+import App from '../App.vue'
+import router from '../router'
 
 const app = createApp(App)
 
