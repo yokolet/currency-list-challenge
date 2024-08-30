@@ -23,6 +23,13 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+group :test do
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem "database_cleaner-active_record"
+  gem "webmock"
+end
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -32,6 +39,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "faker"
+  gem "factory_bot_rails"
+  gem "pry"
 end
 
 group :development do
