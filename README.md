@@ -9,7 +9,7 @@ This is a template for Ruby on Rails and Vue.js.
 ### How to use
 1. clone or download the repo
 2. create a repository on GitHub/GitLab/etc and change the remote origin: `git remote set-url origin [the repo url]`
-3. change database names\
+3. change database names and a user name\
     edit config/database.yml
 4. change the title\
     edit app/views/layout/application.html.erb
