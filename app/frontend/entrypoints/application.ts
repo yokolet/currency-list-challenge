@@ -28,7 +28,6 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 // import '~/index.css'
 
 import './index.css'
-import '../assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
