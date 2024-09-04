@@ -1,43 +1,60 @@
 <script setup lang="ts">
 import { useCurrencyStore } from '../stores/currency';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import Currency from '../components/Currency.vue';
 
-const usOnly = ref<boolean>(false);
-
+const currentData = ref<any[]>([]);
+const direction = ref<string>('none');
 const store = useCurrencyStore();
-onMounted(() => store.getInfo());
-const { data } = storeToRefs(store);
+const { data, usOnly, normal, ascSorted, descSorted, shuffled } = storeToRefs(store);
 
 const sortAsc = () => {
-  console.log('sort asc');
-  if (usOnly.value) {
-    data.value = data.value.filter((a) => a.isSupportedInUS);
-  }
-  data.value = data.value.sort((a, b) => a.name.localeCompare(b.name));
+  direction.value = 'asc';
+  currentData.value = ascSorted.value;
 }
 
 const sortDesc = () => {
-  console.log('sort desc');
-  if (usOnly.value) {
-    data.value = data.value.filter((a) => a.isSupportedInUS);
-  }
-  data.value = data.value.sort((a, b) => b.name.localeCompare(a.name));
+  direction.value = 'desc';
+  currentData.value = descSorted.value;
 }
 
-function shuffleArray(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+const doShuffle = () => {
+  direction.value = 'shuffle';
+  currentData.value = shuffled.value;
 }
 
-const shuffle = () => {
-  data.value = shuffleArray(data.value);
-}
+onBeforeMount(() => {
+  store.getInfo();
+})
 
+watch(
+    () => data.value,
+    (newValue) => {
+      currentData.value = newValue;
+});
+
+watch(
+    () => usOnly.value,
+    (_) => {
+      switch(direction.value) {
+        case 'none':
+          currentData.value = normal.value;
+          break;
+        case 'asc':
+          sortAsc();
+          break;
+        case 'desc':
+          sortDesc();
+          break;
+        case 'shuffle':
+          doShuffle();
+          break;
+        default:
+          console.log(`something wrong with the direction: ${direction.value}`);
+      }
+    }
+)
 </script>
 
 <template>
@@ -49,7 +66,7 @@ const shuffle = () => {
       <button class="button" @click="sortDesc">
         Sort Descending
       </button>
-      <button class="button" @click="shuffle">
+      <button class="button" @click="doShuffle">
         Shuffle
       </button>
       <input
@@ -63,7 +80,7 @@ const shuffle = () => {
 
     <div class="grid grid-cols-3 gap-1">
       <div
-          v-for="item in data"
+          v-for="item in currentData"
           :key="item.id"
           class="flex flex-col items-start justify-center m-4"
       >
